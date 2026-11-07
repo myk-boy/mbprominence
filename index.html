@@ -72,6 +72,8 @@ textarea{min-height:140px;resize:vertical}
 #contact .btn:hover{background:var(--bg);color:var(--ink)}
 .links{display:flex;gap:20px;flex-wrap:wrap;margin-top:24px}
 #status{min-height:24px;color:var(--accent)}
+[hidden]{display:none!important}
+#c-art img{width:100%;height:auto;border-radius:24px;display:block;margin-bottom:20px}
 footer{background:var(--ink);color:#8d897c;text-align:center;padding:24px;font-size:14px}
 /* MENU */
 .burger{position:fixed;right:20px;top:20px;z-index:30;width:56px;height:56px;border-radius:50%;border:0;background:var(--ink);cursor:pointer;display:grid;place-content:center;gap:6px;transition:.25s}
@@ -150,6 +152,10 @@ nav a.active{background:var(--accent);color:#fff}
       <button class="btn" type="submit">Send message</button>
       <p id="status" role="status"></p>
     </form>
+    <div id="c-art" class="rv" hidden>
+      <img src="" alt="Illustration of an email envelope" width="800" height="700" loading="lazy">
+      <a class="btn" id="c-mail" href="#">Write me an email</a>
+    </div>
   </div>
 </section>
 </main>
@@ -197,6 +203,8 @@ const CONFIG = {
     }
   ],
   contact: {
+    showForm: false,   /* ЗМІНИТИ: поставте true, коли підключите Formspree; тоді замість картинки буде форма */
+    image: "",         /* ЗМІНИТИ: своя картинка замість заглушки, напр. img/contact.webp */
     title: "Have a project? Let's talk.",
     text: "Tell me what you need and I will reply within one business day."
   }
@@ -216,10 +224,18 @@ $('#a-bio').textContent = C.about.bio;
 $('#a-approach').textContent = C.about.approach;
 $('#a-skills').innerHTML = C.about.skills.map(s => `<span>${esc(s)}</span>`).join('');
 $('#a-stats').innerHTML = C.about.stats.map(s => `<div><b>${esc(s.n)}</b>${esc(s.t)}</div>`).join('');
-const ph = $('#a-photo');
-if (C.about.photo) ph.style.backgroundImage = `url(${C.about.photo})`; else ph.textContent = C.name;
+/* вбудовані картинки-заглушки (SVG); зникають, коли ви вкажете свої фото в CONFIG */
+const svg = s => 'data:image/svg+xml,' + encodeURIComponent(s);
+const portraitArt = svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000"><rect width="800" height="1000" fill="#121210"/><circle cx="400" cy="330" r="300" fill="#ff4d1c"/><circle cx="400" cy="400" r="120" fill="#f4f0e8"/><path d="M130 1000c0-250 120-400 270-400s270 150 270 400z" fill="#f4f0e8"/><rect x="60" y="60" width="150" height="14" rx="7" fill="#f4f0e8"/><rect x="60" y="90" width="90" height="14" rx="7" fill="#ff4d1c"/></svg>`);
+const phoneArt = svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 760"><rect width="1100" height="760" fill="#1d1d1a"/><circle cx="260" cy="200" r="260" fill="#ff4d1c"/><rect x="380" y="70" width="340" height="640" rx="44" fill="#f4f0e8"/><rect x="410" y="110" width="280" height="560" rx="28" fill="#121210"/><rect x="440" y="160" width="140" height="14" rx="7" fill="#ff4d1c"/><rect x="440" y="210" width="220" height="90" rx="14" fill="#2c2c28"/><rect x="440" y="320" width="220" height="90" rx="14" fill="#2c2c28"/><rect x="440" y="430" width="220" height="90" rx="14" fill="#2c2c28"/><rect x="440" y="580" width="220" height="40" rx="20" fill="#ff4d1c"/><rect x="800" y="150" width="200" height="14" rx="7" fill="#f4f0e8"/><rect x="800" y="185" width="140" height="14" rx="7" fill="#8d897c"/></svg>`);
+const mailArt = svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700"><rect width="800" height="700" rx="40" fill="#1d1d1a"/><circle cx="600" cy="150" r="170" fill="#ff4d1c"/><rect x="120" y="230" width="560" height="340" rx="28" fill="#f4f0e8"/><path d="M120 260l280 200 280-200" fill="none" stroke="#121210" stroke-width="14" stroke-linejoin="round"/><rect x="120" y="90" width="260" height="16" rx="8" fill="#f4f0e8"/><rect x="120" y="125" width="170" height="16" rx="8" fill="#8d897c"/></svg>`);
+$('#a-photo').style.backgroundImage = `url("${C.about.photo || portraitArt}")`;
+$('#c-art img').src = C.contact.image || mailArt;
+$('#c-mail').href = 'mailto:' + C.email;
+$('#form').hidden = !C.contact.showForm;
+$('#c-art').hidden = C.contact.showForm;
 $('#s-grid').innerHTML = C.services.map((s,i) => `<article class="card rv"><span class="n">0${i+1}</span><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></article>`).join('');
-$('#p-list').innerHTML = C.projects.map(p => `<article class="proj rv"><div class="shot" role="img" aria-label="${esc(p.title)}" style="${p.image ? `background-image:url(${esc(p.image)})` : ''}">${p.image ? '' : esc(p.title)}</div><div><span class="type">${esc(p.type)}</span><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p><a href="${esc(p.url)}">${esc(p.linkText)} &rarr;</a></div></article>`).join('');
+$('#p-list').innerHTML = C.projects.map(p => `<article class="proj rv"><div class="shot" role="img" aria-label="${esc(p.title)}" style="background-image:url('${esc(p.image || phoneArt)}')"></div><div><span class="type">${esc(p.type)}</span><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p><a href="${esc(p.url)}">${esc(p.linkText)} &rarr;</a></div></article>`).join('');
 $('#c-title').textContent = C.contact.title;
 $('#c-text').textContent = C.contact.text;
 $('#c-links').innerHTML = `<a href="mailto:${esc(C.email)}">${esc(C.email)}</a>` + C.socials.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join('');
@@ -242,9 +258,9 @@ const spy = new IntersectionObserver(es => es.forEach(e => {
 items.forEach(([id]) => spy.observe($('#'+id)));
 const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); } }), {threshold:.12});
 document.querySelectorAll('.rv').forEach(el => rv.observe(el));
-const top = $('#top');
-addEventListener('scroll', () => top.classList.toggle('show', scrollY > 700), {passive:true});
-top.onclick = () => scrollTo({top:0, behavior:'smooth'});
+const toTop = $('#top');
+addEventListener('scroll', () => toTop.classList.toggle('show', scrollY > 700), {passive:true});
+toTop.onclick = () => scrollTo({top:0, behavior:'smooth'});
  
 /* form */
 $('#form').addEventListener('submit', async e => {
