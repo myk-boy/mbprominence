@@ -38,19 +38,21 @@ i{font-style:italic;color:var(--accent)}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:17px 32px;border-radius:99px;border:1px solid var(--accent);font:600 14px var(--sans);letter-spacing:.06em;cursor:pointer;background:transparent;color:var(--text);transition:background .3s,color .3s,transform .3s,box-shadow .3s}
 .btn:hover{background:var(--accent);color:#0d0d0f;transform:translateY(-3px);box-shadow:0 12px 32px rgba(200,176,138,.25)}
 .btn:active{transform:none}
+.btn.ar:after{content:"\2192";display:inline-block;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.btn.ar:hover:after{transform:translateX(6px)}
 .btn.fill{background:var(--accent);color:#0d0d0f}
 .btn.fill:hover{background:var(--text);border-color:var(--text)}
 .row{display:flex;gap:14px;flex-wrap:wrap}
 /* header */
-header{position:fixed;inset:0 0 auto;z-index:50;background:rgba(13,13,15,.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+header{position:fixed;inset:0 0 auto;z-index:50;background:rgba(13,13,15,.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:background .4s,border-color .4s}
+header.sc{background:rgba(13,13,15,.9);border-bottom-color:var(--line)}
 .hd{display:flex;align-items:center;justify-content:space-between;height:74px}
 .logo{font:600 24px var(--serif);letter-spacing:.02em}
 .logo i{font-weight:500}
-.links{display:flex;gap:36px}
-.links a{font-size:14px;color:var(--muted);position:relative;padding:6px 0;transition:color .3s}
-.links a:after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s}
-.links a:hover,.links a.on{color:var(--text)}
-.links a:hover:after,.links a.on:after{transform:none}
+.links{display:flex;gap:6px}
+.links a{font-size:14px;color:var(--muted);padding:9px 18px;border-radius:99px;transition:color .3s,background .4s,box-shadow .4s}
+.links a:hover{color:var(--text);background:rgba(244,244,240,.05)}
+.links a.on{color:var(--accent);background:rgba(200,176,138,.12);box-shadow:0 0 24px rgba(200,176,138,.1)}
 .bg{display:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;place-content:center;gap:6px}
 .bg i{display:block;width:18px;height:1.5px;background:var(--text);transition:.3s}
 .bg[aria-expanded=true] i:first-child{transform:translateY(3.8px) rotate(45deg)}
@@ -68,21 +70,29 @@ header{position:fixed;inset:0 0 auto;z-index:50;background:rgba(13,13,15,.65);ba
 .stats span{font-size:13px;color:var(--muted)}
 /* services */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:36px 30px;transition:transform .4s,border-color .4s,background .4s}
-.card:hover{transform:translateY(-8px);border-color:var(--accent);background:#19191c}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:36px 30px;transition:border-color .5s,background .5s,box-shadow .6s}
+.card.done{transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .5s,background .5s,box-shadow .6s}
+.card:hover{border-color:rgba(200,176,138,.7);background:#19191c;box-shadow:0 0 30px rgba(200,176,138,.08)}
+.card.done:hover{transform:translateY(-8px)}
 .card .n{font:italic 500 22px var(--serif);color:var(--accent);display:block;margin-bottom:64px}
 .card p{color:var(--muted);margin-top:12px;font-size:15px}
 /* work */
 .work{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(24px,3.5vw,48px) clamp(20px,3vw,40px)}
 .pj{display:block;text-align:left;background:none;border:0;color:inherit;font:inherit;cursor:pointer;padding:0}
-.pv{aspect-ratio:16/10;border-radius:22px;overflow:hidden;border:1px solid var(--line);position:relative}
+.pv{aspect-ratio:16/10;border-radius:22px;overflow:hidden;border:1px solid var(--line);position:relative;transition:border-color .6s,box-shadow .6s}
+.pj:hover .pv,.pj:focus-visible .pv{border-color:rgba(200,176,138,.7);box-shadow:0 0 30px rgba(200,176,138,.08)}
 .pv>div{position:absolute;inset:0;background:center/cover;transition:transform .9s cubic-bezier(.2,.8,.2,1);display:grid;place-items:center;font:italic 500 clamp(32px,4vw,56px) var(--serif);color:rgba(255,255,255,.85)}
 .pj:hover .pv>div,.pj:focus-visible .pv>div{transform:scale(1.07)}
-.tags{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:22px 0 8px}
+.tags{display:inline-block;font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin:22px 0 12px;padding:7px 16px;border:1px solid rgba(200,176,138,.35);border-radius:99px;transition:transform .5s cubic-bezier(.2,.8,.2,1),background .4s}
+.pj:hover .tags{transform:translateX(6px);background:rgba(200,176,138,.1)}
+.pj h3,.pj p{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.pj:hover h3{transform:translateX(10px)}
+.pj:hover p{transform:translateX(6px)}
 .pj h3{margin-bottom:8px}
 .pj p{color:var(--muted);font-size:15px;margin-bottom:14px}
-.pj .go{font-size:14px;font-weight:600;border-bottom:1px solid var(--accent);padding-bottom:3px;transition:letter-spacing .3s}
-.pj:hover .go{letter-spacing:.06em}
+.pj .go{display:inline-block;font-size:14px;font-weight:600;border-bottom:1px solid var(--accent);padding-bottom:3px}
+.pj .go span{display:inline-block;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.pj:hover .go span{transform:translateX(6px)}
 /* modal */
 dialog{margin:auto;max-width:min(760px,92vw);width:100%;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:26px;padding:0;overflow:hidden}
 dialog::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(6px)}
@@ -104,19 +114,25 @@ input:hover,textarea:hover{border-color:rgba(200,176,138,.5)}
 input:focus,textarea:focus{border-color:var(--accent);outline:0}
 textarea{min-height:140px;resize:vertical}
 #msg{min-height:24px;color:var(--accent);font-size:15px}
-.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--accent);color:#000;padding:12px 24px;border-radius:99px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.4s;z-index:90}
-.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,36px) scale(.9);background:var(--accent);color:#000;padding:12px 24px;border-radius:99px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:opacity .4s,transform .7s cubic-bezier(.34,1.56,.64,1);z-index:90;box-shadow:0 10px 40px rgba(200,176,138,.25)}
+.toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
 footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-size:14px}
 .ft{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
 .ft nav,.ft .soc{display:flex;gap:20px}
 .ft a:hover{color:var(--accent)}
+/* atmosphere: warm light behind services and portfolio (not hero) */
+#services,#portfolio{position:relative}
+#services:before,#portfolio:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 45% at 85% 25%,rgba(200,176,138,.09),transparent 70%)}
+#portfolio:before{background:radial-gradient(ellipse 55% 45% at 10% 60%,rgba(200,176,138,.08),transparent 70%)}
+#services .wrap,#portfolio .wrap{position:relative}
 /* reveal */
-.rv{opacity:0;transform:translateY(36px);transition:opacity .9s calc(var(--i,0)*90ms),transform .9s calc(var(--i,0)*90ms) cubic-bezier(.2,.8,.2,1)}
+.rv{opacity:0;transform:translateY(36px);transition:opacity .9s calc(var(--i,0)*120ms),transform .9s calc(var(--i,0)*120ms) cubic-bezier(.2,.8,.2,1)}
 .rv.in{opacity:1;transform:none}
 @media(max-width:860px){
   .links{position:absolute;inset:74px 0 auto;flex-direction:column;gap:0;background:rgba(13,13,15,.97);padding:8px var(--pad) 20px;border-bottom:1px solid var(--line);transform:translateY(-14px);opacity:0;visibility:hidden;transition:.3s}
   .links.open{transform:none;opacity:1;visibility:visible}
-  .links a{padding:16px 0;font-size:20px;border-bottom:1px solid var(--line)}
+  .links a{padding:16px 0;font-size:20px;border-bottom:1px solid var(--line);border-radius:0}
+  .links a.on,.links a:hover{background:none;box-shadow:none}
   .bg{display:grid}
   .about,.cw,.work{grid-template-columns:1fr}
   .portrait{max-width:340px;margin:auto}
@@ -139,7 +155,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   <span class="eyebrow rv">Web design &amp; development</span>
   <h1 class="rv" style="--i:1">Aesthetic websites that <i>quietly</i> convert.</h1>
   <p class="rv" style="--i:2">Strategy, UI/UX and clean front-end craft in one hand, so your brand looks exceptional and your visitors take action.</p>
-  <div class="row rv" style="--i:3"><a class="btn fill" href="#contact">Start a Project</a><a class="btn" href="#portfolio">View Selected Work</a></div>
+  <div class="row rv" style="--i:3"><a class="btn fill ar" href="#contact">Start a Project</a><a class="btn ar" href="#portfolio">View Selected Work</a></div>
 </div></section>
  
 <section id="about"><div class="wrap about">
@@ -182,7 +198,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
     <input name="email" type="email" placeholder="Your email" required aria-label="Email" autocomplete="email">
     <textarea name="message" placeholder="Tell me about your project" required aria-label="Project description"></textarea>
     <input name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
-    <button class="btn fill" type="submit">Send message</button>
+    <button class="btn fill ar" type="submit">Send message</button>
     <p id="msg" role="status"></p>
   </form>
 </div></section>
@@ -194,7 +210,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   <div class="soc" id="soc2"></div>
 </div></footer>
  
-<dialog id="dlg" aria-labelledby="d-t"><button class="x" id="dx" aria-label="Close">&times;</button><div class="pv" id="d-pv"><div></div></div><div class="mb"><div class="tags" id="d-tags"></div><h3 id="d-t"></h3><p id="d-p"></p><a class="btn fill" href="#contact" id="d-cta">Start a similar project</a></div></dialog>
+<dialog id="dlg" aria-labelledby="d-t"><button class="x" id="dx" aria-label="Close">&times;</button><div class="pv" id="d-pv"><div></div></div><div class="mb"><div class="tags" id="d-tags"></div><h3 id="d-t"></h3><p id="d-p"></p><a class="btn fill ar" href="#contact" id="d-cta">Start a similar project</a></div></dialog>
 <div class="toast" id="toast" role="status">Copied!</div>
  
 <script>
@@ -220,7 +236,7 @@ const $ = s => document.querySelector(s), esc = s => String(s).replace(/[&<>"]/g
 const bgOf = p => p.img ? `url('${esc(p.img)}')` : `linear-gradient(135deg,${p.g[0]},${p.g[1]})`;
  
 if (SITE.photo) { const ph = $('#photo'); ph.style.backgroundImage = `url('${SITE.photo}')`; ph.textContent = ''; }
-$('#work').innerHTML = SITE.projects.map((p,i) => `<button class="pj rv" style="--i:${i%2}" data-i="${i}" aria-haspopup="dialog"><div class="pv"><div style="background:${bgOf(p)} center/cover">${p.img ? '' : esc(p.t)}</div></div><div class="tags">${esc(p.tags)}</div><h3>${esc(p.t)}</h3><p>${esc(p.s)}</p><span class="go">View Case Study &rarr;</span></button>`).join('');
+$('#work').innerHTML = SITE.projects.map((p,i) => `<button class="pj rv" style="--i:${i%2}" data-i="${i}" aria-haspopup="dialog"><div class="pv"><div style="background:${bgOf(p)} center/cover">${p.img ? '' : esc(p.t)}</div></div><div class="tags">${esc(p.tags)}</div><h3>${esc(p.t)}</h3><p>${esc(p.s)}</p><span class="go">View Case Study <span>&rarr;</span></span></button>`).join('');
 $('#mail').textContent = SITE.email; $('#mail').href = 'mailto:' + SITE.email;
 const soc = SITE.socials.map(s => `<a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.l)}</a>`).join('');
 $('#soc').innerHTML = soc; $('#soc2').innerHTML = soc;
@@ -235,9 +251,20 @@ addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
  
 /* active link + reveal */
 const la = [...links.querySelectorAll('a')];
-const spy = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) la.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id)); }), {rootMargin:'-45% 0px -50% 0px'});
-['about','services','portfolio','contact'].forEach(id => spy.observe($('#' + id)));
-const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); } }), {threshold:.12});
+/* header state + active link (the last section whose top passed 40% of the screen) */
+const ids = ['about','services','portfolio','contact'];
+const onScroll = () => {
+  $('header').classList.toggle('sc', scrollY > 50);
+  let cur = '';
+  ids.forEach(id => { if ($('#' + id).getBoundingClientRect().top <= innerHeight * .4) cur = id; });
+  if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) cur = 'contact';
+  la.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur));
+};
+addEventListener('scroll', onScroll, {passive:true}); onScroll();
+ 
+/* reveal: cascade delay per group; 'done' frees hover transitions afterwards */
+document.querySelectorAll('.grid,.work').forEach(g => g.querySelectorAll('.rv').forEach((el,i) => el.style.setProperty('--i', i % 4)));
+const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); setTimeout(() => e.target.classList.add('done'), 1800); rv.unobserve(e.target); } }), {threshold:.12});
 document.querySelectorAll('.rv').forEach(el => rv.observe(el));
  
 /* case study modal */
