@@ -144,7 +144,9 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   .links a.on,.links a:hover{background:none;box-shadow:none}
   .bg{display:grid}
   .about,.cw,.work,.hero-grid{grid-template-columns:1fr}
-  .hero-visual{justify-self:center;max-width:460px;margin-top:-4px}
+  /* мобільна версія: скульптура за текстом, притемнена (щоб повернути старий вигляд, видаліть цей блок до #hero) */
+  .hero-visual{position:absolute;z-index:0;width:135vw;max-width:none;right:-22vw;top:56%;transform:translateY(-50%);opacity:.5;margin:0}
+  .hero-copy h1,.hero-copy p{text-shadow:0 2px 28px rgba(13,13,15,.95)}
   #hero{padding-top:110px}
   .portrait{max-width:340px;margin:auto}
 }
