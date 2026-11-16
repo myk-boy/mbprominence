@@ -230,8 +230,8 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   <figure class="hero-visual" aria-hidden="true">
     <div class="hv-tilt" id="hvTilt">
       <video id="hvVideo" autoplay muted loop playsinline preload="metadata" disablepictureinpicture tabindex="-1" width="900" height="1020" poster="img/hero-poster.webp">
-        <source src="img/hero.webm" type="video/webm; codecs=vp9">
         <source src="img/hero.mp4" type="video/mp4">
+        <source src="img/hero.webm" type="video/webm; codecs=vp9">
       </video>
     </div>
   </figure>
@@ -401,6 +401,13 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
   let visible = true;
   new IntersectionObserver(es => { visible = es[0].isIntersecting; visible && !document.hidden ? play() : v.pause(); }, {threshold:.05}).observe(hero);
   document.addEventListener('visibilitychange', () => { document.hidden || !visible ? v.pause() : play(); });
+  /* страховка: якщо за ~3.5с відео не рушило (напр. формат не декодується), пробуємо інше джерело */
+  setTimeout(() => {
+    if (document.hidden || !visible || (v.currentTime > 0 && !v.paused)) return;
+    const first = v.querySelector('source');
+    if (first && v.querySelectorAll('source').length > 1) { first.remove(); v.load(); play(); }
+    else play();
+  }, 3500);
   /* рух за мишею прибрано навмисно: відео просто спокійно крутиться само */
 })();
  
