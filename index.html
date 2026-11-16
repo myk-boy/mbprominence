@@ -28,6 +28,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+/* інтро: ховає хедер і текст hero до появи скульптури; failsafe показує все через 3.5с, навіть якщо щось зламалось */
+document.documentElement.classList.add('intro');
+setTimeout(function(){document.documentElement.classList.add('go')},3500);
+</script>
 <style>
 /* ---------- Змінні (ЗМІНИТИ тут) ---------- */
 :root{
@@ -87,6 +92,18 @@ header.sc{background:rgba(13,13,15,.9);border-bottom-color:var(--line)}
   -webkit-mask-image:radial-gradient(ellipse 72% 66% at 50% 47%,#000 52%,transparent 100%);mask-image:radial-gradient(ellipse 72% 66% at 50% 47%,#000 52%,transparent 100%)}
 .hv-tilt video{width:100%;height:100%;object-fit:cover;display:block;background:transparent;opacity:0;transition:opacity 1.2s ease}
 .hv-tilt.ready video{opacity:1}
+/* золоте сяйво за скульптурою */
+.hero-visual{isolation:isolate}
+.hero-visual:before{content:"";position:absolute;inset:-14%;z-index:-1;background:radial-gradient(circle,rgba(200,176,138,.26),transparent 62%);animation:breathe 8s ease-in-out infinite;transition:opacity 2.2s;pointer-events:none}
+/* концентричні кола */
+.rings{position:absolute;left:74%;top:50%;width:min(130vmax,2200px);height:min(130vmax,2200px);transform:translate(-50%,-50%);z-index:0;pointer-events:none;will-change:transform;animation:ringsBreathe 14s ease-in-out infinite;transition:opacity 2.6s;-webkit-mask-image:radial-gradient(circle,#000 18%,transparent 66%);mask-image:radial-gradient(circle,#000 18%,transparent 66%)}
+@keyframes breathe{50%{transform:scale(1.08)}}
+@keyframes ringsBreathe{50%{transform:translate(-50%,-50%) scale(1.045)}}
+/* інтро: спочатку скульптура, потім хедер і текст (клас go додає JS) */
+html.intro header{transition:background .4s,border-color .4s,opacity 1.2s,transform 1.2s cubic-bezier(.2,.8,.2,1)}
+html.intro:not(.go) header{opacity:0;transform:translateY(-16px)}
+html.intro:not(.go) .hero-copy .rv{opacity:0!important;transform:translateY(30px)!important}
+html.intro:not(.go) .rings,html.intro:not(.go) .hero-visual:before{opacity:0}
 /* about */
 .about{display:grid;grid-template-columns:5fr 6fr;gap:clamp(36px,7vw,110px);align-items:center}
 .portrait{aspect-ratio:4/5;border-radius:999px 999px 28px 28px;border:1px solid var(--accent);background:radial-gradient(circle at 50% 30%,rgba(200,176,138,.35),transparent 55%),linear-gradient(160deg,#1c1c20,#0d0d0f) center/cover;display:grid;place-items:center;font:italic 500 clamp(80px,12vw,160px) var(--serif);color:var(--accent)}
@@ -177,9 +194,8 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   .about,.cw,.work,.hero-grid{grid-template-columns:1fr}
   /* мобільна версія: скульптура за текстом, притемнена (щоб повернути старий вигляд, видаліть цей блок до #hero) */
   .hero-visual{position:absolute;z-index:0;width:135vw;max-width:none;right:-30vw;top:62%;transform:translateY(-50%);opacity:.85;margin:0}
-  /* скляна панель під текстом: скульптура лишається яскравою, текст читається */
-  .hero-copy:before{content:"";position:absolute;inset:-26px -14px;z-index:-1;border-radius:26px;background:rgba(13,13,15,.58);border:1px solid rgba(200,176,138,.28);pointer-events:none}
-  .hero-copy h1,.hero-copy p{text-shadow:0 1px 14px rgba(13,13,15,.7)}
+  .rings{left:62%;top:62%}
+  .hero-copy h1,.hero-copy p{text-shadow:0 2px 22px rgba(13,13,15,.92),0 0 4px rgba(13,13,15,.6)}
   .hero-copy p{color:#d6d4ce}
   .hero-copy .btn:not(.fill){background:rgba(13,13,15,.65);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
   #hero{padding-top:110px}
@@ -199,7 +215,9 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
 </div></header>
  
 <main>
-<section id="hero"><div class="wrap hero-grid"><div class="hero-copy">
+<section id="hero">
+  <svg class="rings" viewBox="-500 -500 1000 1000" aria-hidden="true"><g fill="none" stroke="#c8b08a" stroke-width=".6"><circle r="95" stroke-opacity=".34"/><circle r="170" stroke-opacity=".26"/><circle r="250" stroke-opacity=".2"/><circle r="335" stroke-opacity=".15"/><circle r="420" stroke-opacity=".1"/><circle r="500" stroke-opacity=".06"/></g></svg>
+  <div class="wrap hero-grid"><div class="hero-copy">
   <span class="eyebrow rv">Web design &amp; development</span>
   <h1 class="rv" style="--i:1">Aesthetic websites that <i>quietly</i> convert.</h1>
   <p class="rv" style="--i:2">Strategy, UI/UX and clean front-end craft in one hand, so your brand looks exceptional and your visitors take action.</p>
@@ -361,6 +379,11 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
   const v = $('#hvVideo'), box = $('#hvTilt'), hero = $('#hero');
   if (!v || !box) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* інтро: після появи скульптури проявляємо хедер і текст (раз на завантаження) */
+  const goIntro = () => document.documentElement.classList.add('go');
+  if (reduce) goIntro();
+  else if (document.readyState === 'complete') setTimeout(goIntro, 900);
+  else addEventListener('load', () => setTimeout(goIntro, 900));
   const show = () => box.classList.add('ready');
   if (v.readyState >= 2) show(); else v.addEventListener('loadeddata', show, {once:true});
   v.addEventListener('error', () => box.classList.remove('ready'));   /* лишається poster */
