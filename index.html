@@ -27,7 +27,9 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/hero-poster.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"></noscript>
 <script>
 /* інтро: ховає хедер і текст hero до появи скульптури; failsafe показує все через 3.5с, навіть якщо щось зламалось */
 document.documentElement.classList.add('intro');
@@ -66,8 +68,8 @@ i{font-style:italic;color:var(--accent)}
 .btn.fill:hover{background:var(--text);border-color:var(--text)}
 .row{display:flex;gap:14px;flex-wrap:wrap}
 /* header */
-header{position:fixed;inset:0 0 auto;z-index:50;background:rgba(13,13,15,.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:background .4s,border-color .4s}
-header.sc{background:rgba(13,13,15,.9);border-bottom-color:var(--line)}
+header{position:fixed;inset:0 0 auto;z-index:50;background:rgba(13,13,15,.65);border-bottom:1px solid transparent;transition:background .4s,border-color .4s}
+header.sc{background:rgba(13,13,15,.9);border-bottom-color:var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .hd{display:flex;align-items:center;justify-content:space-between;height:74px}
 .logo{font:600 24px var(--serif);letter-spacing:.02em}
 .logo i{font-weight:500}
@@ -97,6 +99,7 @@ header.sc{background:rgba(13,13,15,.9);border-bottom-color:var(--line)}
 .hero-visual:before{content:"";position:absolute;inset:-14%;z-index:-1;background:radial-gradient(circle,rgba(200,176,138,.26),transparent 62%);animation:breathe 8s ease-in-out infinite;transition:opacity 2.2s;pointer-events:none}
 /* концентричні кола */
 .rings{position:absolute;left:74%;top:50%;width:min(130vmax,2200px);height:min(130vmax,2200px);transform:translate(-50%,-50%);z-index:0;pointer-events:none;will-change:transform;animation:ringsBreathe 14s ease-in-out infinite;transition:opacity 2.6s;-webkit-mask-image:radial-gradient(circle,#000 18%,transparent 66%);mask-image:radial-gradient(circle,#000 18%,transparent 66%)}
+@media(min-width:861px){.rings{animation:none;will-change:auto}}  /* на десктопі кола статичні: менше навантаження на GPU */
 @keyframes breathe{50%{transform:scale(1.08)}}
 @keyframes ringsBreathe{50%{transform:translate(-50%,-50%) scale(1.045)}}
 /* інтро: спочатку скульптура, потім хедер і текст (клас go додає JS) */
@@ -329,16 +332,23 @@ addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 const la = [...links.querySelectorAll('a')];
 /* header state + active link (the last section whose top passed 40% of the screen) */
 const ids = ['about','services','portfolio','contact'];
+/* вимірювання кешуються (без forced reflow під час скролу) */
+let tops = [], docH = 0;
+const measure = () => { tops = ids.map(id => $('#' + id).getBoundingClientRect().top + scrollY); docH = document.documentElement.scrollHeight; };
 const onScroll = () => {
-  $('header').classList.toggle('sc', scrollY > 50);
-  const hh = document.documentElement.scrollHeight - innerHeight;
-  $('header').style.setProperty('--p', hh > 0 ? Math.min(scrollY / hh, 1) : 0);
+  const hd = $('header');
+  hd.classList.toggle('sc', scrollY > 50);
+  const hh = docH - innerHeight;
+  hd.style.setProperty('--p', hh > 0 ? Math.min(scrollY / hh, 1) : 0);
   let cur = '';
-  ids.forEach(id => { if ($('#' + id).getBoundingClientRect().top <= innerHeight * .4) cur = id; });
-  if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) cur = 'contact';
+  ids.forEach((id, i) => { if (tops[i] - scrollY <= innerHeight * .4) cur = id; });
+  if (innerHeight + scrollY >= docH - 4) cur = 'contact';
   la.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur));
 };
-addEventListener('scroll', onScroll, {passive:true}); onScroll();
+addEventListener('scroll', onScroll, {passive:true});
+addEventListener('resize', () => { measure(); onScroll(); });
+addEventListener('load', () => { measure(); onScroll(); });
+measure(); onScroll();
  
 /* reveal: cascade delay per group; 'done' frees hover transitions afterwards */
 document.querySelectorAll('.grid,.work').forEach(g => g.querySelectorAll('.rv').forEach((el,i) => el.style.setProperty('--i', i % 4)));
@@ -382,8 +392,7 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
   /* інтро: після появи скульптури проявляємо хедер і текст (раз на завантаження) */
   const goIntro = () => document.documentElement.classList.add('go');
   if (reduce) goIntro();
-  else if (document.readyState === 'complete') setTimeout(goIntro, 900);
-  else addEventListener('load', () => setTimeout(goIntro, 900));
+  else Promise.race([document.fonts ? document.fonts.ready : 0, new Promise(r => setTimeout(r, 1200))]).then(() => setTimeout(goIntro, 500));
   const show = () => box.classList.add('ready');
   if (v.readyState >= 2) show(); else v.addEventListener('loadeddata', show, {once:true});
   v.addEventListener('error', () => box.classList.remove('ready'));   /* лишається poster */
@@ -392,17 +401,7 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
   let visible = true;
   new IntersectionObserver(es => { visible = es[0].isIntersecting; visible && !document.hidden ? play() : v.pause(); }, {threshold:.05}).observe(hero);
   document.addEventListener('visibilitychange', () => { document.hidden || !visible ? v.pause() : play(); });
-  /* mouse-effects лише для миші; на touch вимкнено */
-  if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-  let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
-  const loop = () => {
-    cx += (tx - cx) * .06; cy += (ty - cy) * .06;           /* плавна інтерполяція */
-    box.style.transform = `translate3d(${cx * 14}px,${cy * 10}px,0) rotateY(${cx * 5}deg) rotateX(${-cy * 4}deg)`;
-    raf = (Math.abs(tx - cx) + Math.abs(ty - cy) > .002) ? requestAnimationFrame(loop) : 0;
-  };
-  const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
-  hero.addEventListener('mousemove', e => { const r = hero.getBoundingClientRect(); tx = (e.clientX - r.left) / r.width * 2 - 1; ty = (e.clientY - r.top) / r.height * 2 - 1; kick(); });
-  hero.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
+  /* рух за мишею прибрано навмисно: відео просто спокійно крутиться само */
 })();
  
 /* form: Formspree, or mailto fallback until endpoint is set */
