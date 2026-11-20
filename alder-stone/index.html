@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -32,11 +31,11 @@ h1{font-size:clamp(2.8rem,6.4vw,6rem)}
 h2{font-size:clamp(2rem,3.8vw,3.4rem)}
 h3{font-size:1.7rem}
 em{font-style:italic}
- 
+
 /* concept notice */
 .notice{background:var(--char);color:var(--paper);font-size:.78rem;text-align:center;padding:.6rem var(--pad);letter-spacing:.02em}
 .notice a{text-underline-offset:3px}
- 
+
 /* header */
 header{border-bottom:1px solid var(--line)}
 .bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding-block:1.4rem}
@@ -46,13 +45,13 @@ nav a{font-size:.88rem;text-decoration:none;color:var(--mute);transition:color .
 nav a:hover{color:var(--ink)}
 .enq{justify-self:end;font-size:.85rem;text-decoration:none;border:1px solid var(--ink);padding:.6rem 1.4rem;transition:background .35s,color .35s}
 .enq:hover{background:var(--ink);color:var(--paper)}
- 
+
 /* image slots: tonal fallback shows if the photo file is missing */
 .ph{position:relative;overflow:hidden;background:linear-gradient(160deg,#cfc8bb,#a79f90);margin:0}
 .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .ph.dark{background:linear-gradient(160deg,#4a463f,#2a2823)}
 .ph.light{background:linear-gradient(160deg,#e4ddd0,#c9c0af)}
- 
+
 /* hero */
 .hero{display:grid;grid-template-columns:7fr 5fr;gap:clamp(2rem,6vw,6rem);padding-block:clamp(3rem,7vw,6rem)}
 .hero-copy{display:flex;flex-direction:column;justify-content:space-between;gap:3rem}
@@ -66,7 +65,7 @@ nav a:hover{color:var(--ink)}
 .hero-fig .cap{margin:0}
 .rise{animation:rise 1.1s cubic-bezier(.2,.7,.2,1) both}
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
- 
+
 /* philosophy */
 .phil{border-top:1px solid var(--line);display:grid;grid-template-columns:4fr 8fr;gap:clamp(2rem,6vw,6rem);padding-block:clamp(3.5rem,8vw,7rem)}
 .phil .ph{aspect-ratio:4/5;margin-top:1.5rem}
@@ -78,7 +77,7 @@ nav a:hover{color:var(--ink)}
 .principles div:first-child{padding-left:0}
 .principles h3{font-size:1.35rem;margin-bottom:.6rem}
 .principles p{margin:0;color:var(--mute);font-size:.92rem;line-height:1.6}
- 
+
 /* works */
 .works{border-top:1px solid var(--line);padding-block:clamp(3.5rem,8vw,7rem)}
 .works-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:3rem;flex-wrap:wrap}
@@ -93,7 +92,29 @@ nav a:hover{color:var(--ink)}
 .card h3{margin:.4rem 0 .6rem}
 .card p{margin:0;color:var(--mute);font-size:.95rem;max-width:30rem}
 .card.wide .meta{padding-bottom:.5rem}
- 
+
+/* project dialog */
+body:has(dialog[open]){overflow:hidden}
+dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(1080px,calc(100% - 2rem));max-height:calc(100dvh - 2rem);overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(28,27,25,.72)}
+dialog[open]{animation:dlg .35s ease both}
+@keyframes dlg{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.dlg{display:grid;grid-template-columns:6fr 5fr}
+.dlg .ph{min-height:100%;aspect-ratio:auto}
+.dlg-body{padding:clamp(1.5rem,3.5vw,3rem);display:flex;flex-direction:column;gap:1.4rem}
+.dlg-body h2{font-size:clamp(2rem,3vw,2.8rem)}
+.dlg-body p{margin:0;color:var(--mute)}
+.dlg dl{margin:0;border-top:1px solid var(--line)}
+.dlg dl div{display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.dlg dt{color:var(--mute)}
+.dlg dd{margin:0}
+.dlg-close{position:absolute;top:.8rem;right:.8rem;z-index:2;background:var(--paper);color:var(--ink);border:1px solid var(--line);padding:.5rem 1rem;font-size:.8rem}
+.dlg-close:hover{background:#fff}
+.dlg-cta{display:inline-block;align-self:flex-start;text-decoration:none;font-size:.9rem;border:1px solid var(--ink);padding:.8rem 1.6rem;transition:background .35s,color .35s}
+.dlg-cta:hover{background:var(--ink);color:var(--paper)}
+@media (max-width:900px){.dlg{grid-template-columns:1fr}.dlg .ph{aspect-ratio:16/10;min-height:0}}
+@media (prefers-reduced-motion:reduce){dialog[open]{animation:none}.dlg-cta{transition:none}}
+
 /* metrics */
 .metrics{border-block:1px solid var(--line)}
 .metrics ul{list-style:none;margin:0 auto;padding:0;display:grid;grid-template-columns:repeat(4,1fr);max-width:1440px}
@@ -101,7 +122,7 @@ nav a:hover{color:var(--ink)}
 .metrics li:first-child{border-left:0}
 .metrics strong{display:block;font:400 clamp(2rem,3.4vw,3rem)/1 var(--serif);margin-bottom:.6rem}
 .metrics span{font-size:.85rem;color:var(--mute)}
- 
+
 /* consult */
 .consult{background:var(--char);color:var(--paper);padding-block:clamp(4rem,9vw,8rem)}
 .consult .cap{color:rgba(246,244,240,.6)}
@@ -115,11 +136,11 @@ input:focus,textarea:focus{outline:0;border-bottom-color:var(--paper)}
 button{align-self:flex-start;background:var(--paper);color:var(--char);border:0;font:500 .9rem var(--sans);padding:1rem 2rem;cursor:pointer;transition:background .3s}
 button:hover{background:#fff}
 .status{font-size:.88rem;color:rgba(246,244,240,.75);min-height:1.4em;margin:0}
- 
+
 footer{background:var(--char);color:rgba(246,244,240,.6);border-top:1px solid var(--line-d);font-size:.8rem}
 footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;padding-block:1.6rem}
 footer a{text-underline-offset:3px}
- 
+
 @media (max-width:900px){
   .bar{grid-template-columns:1fr auto}
   nav{grid-column:1/-1;order:3;padding-top:1rem}
@@ -144,21 +165,21 @@ footer a{text-underline-offset:3px}
 </style>
 </head>
 <body>
- 
-<div class="notice">Concept project — Alder &amp; Stone is a fictional practice, designed and built as a portfolio demonstration. <a href="https://example.com/portfolio">Back to portfolio</a></div>
- 
+
+<div class="notice">Concept project — Alder &amp; Stone is a fictional practice, designed and built as a portfolio demonstration. <a href="https://myk-boy.github.io/mbprominence/">Back to portfolio</a></div>
+
 <header>
   <div class="wrap bar">
     <a class="logo" href="#top">ALDER &amp; STONE</a>
     <nav aria-label="Main"><ul>
       <li><a href="#philosophy">Philosophy</a></li>
       <li><a href="#works">Selected Works</a></li>
-      <li><a href="#journal">Journal</a></li>
+      <li><a href="#practice">Practice</a></li>
     </ul></nav>
     <a class="enq" href="#enquire">Enquire</a>
   </div>
 </header>
- 
+
 <main id="top">
   <section class="wrap hero">
     <div class="hero-copy rise">
@@ -174,7 +195,7 @@ footer a{text-underline-offset:3px}
       <figcaption class="cap hero-cap"><span>Cotswolds residence</span><span>Completed 2026</span></figcaption>
     </figure>
   </section>
- 
+
   <section class="wrap phil" id="philosophy">
     <div>
       <p class="cap">Approach</p>
@@ -190,14 +211,14 @@ footer a{text-underline-offset:3px}
       </div>
     </div>
   </section>
- 
+
   <section class="wrap works" id="works">
     <div class="works-head">
       <h2>Selected works</h2>
       <p class="cap">2024 – 2026</p>
     </div>
     <div class="grid">
-      <a class="card wide" href="#enquire">
+      <a class="card wide" href="#enquire" data-p="meadow">
         <div class="ph"><img src="images/meadow-house.jpg" alt="The Meadow House, a single-storey timber and limestone home" loading="lazy" onerror="this.remove()"></div>
         <div class="meta">
           <p class="cap">Gloucestershire, England · 340 m²</p>
@@ -205,7 +226,7 @@ footer a{text-underline-offset:3px}
           <p>A single-storey timber and limestone home, opening onto the southern valley.</p>
         </div>
       </a>
-      <a class="card" href="#enquire">
+      <a class="card" href="#enquire" data-p="highland">
         <div class="ph dark"><img src="images/highland-pavilion.jpg" alt="Dark timber pavilion in a Scottish forest" loading="lazy" onerror="this.remove()"></div>
         <div class="meta">
           <p class="cap">Perthshire, Scotland · 210 m²</p>
@@ -213,7 +234,7 @@ footer a{text-underline-offset:3px}
           <p>A cantilevered, off-grid retreat engineered for long northern winters.</p>
         </div>
       </a>
-      <a class="card" href="#enquire">
+      <a class="card" href="#enquire" data-p="kensington">
         <div class="ph light"><img src="images/kensington.jpg" alt="Bright restored interior with tall ceilings" loading="lazy" onerror="this.remove()"></div>
         <div class="meta">
           <p class="cap">London, England · 420 m²</p>
@@ -223,8 +244,8 @@ footer a{text-underline-offset:3px}
       </a>
     </div>
   </section>
- 
-  <section class="metrics" id="journal" aria-label="Practice in numbers">
+
+  <section class="metrics" id="practice" aria-label="Practice in numbers">
     <ul>
       <li><strong>14+</strong><span>Years in practice</span></li>
       <li><strong>38</strong><span>Residences across the UK and Europe</span></li>
@@ -232,7 +253,7 @@ footer a{text-underline-offset:3px}
       <li><strong>100%</strong><span>Bespoke structural engineering</span></li>
     </ul>
   </section>
- 
+
   <section class="consult" id="enquire">
     <div class="wrap consult-grid">
       <div>
@@ -250,15 +271,65 @@ footer a{text-underline-offset:3px}
     </div>
   </section>
 </main>
- 
+
 <footer>
   <div class="wrap">
     <span>© 2026 Alder &amp; Stone Architects Ltd (fictional). London, United Kingdom.</span>
-    <span>hello@alderandstone.example · Concept project for portfolio use only. <a href="https://example.com/portfolio">Back to portfolio</a></span>
+    <span>hello@alderandstone.example · Concept project for portfolio use only. <a href="https://myk-boy.github.io/mbprominence/">Back to portfolio</a></span>
   </div>
 </footer>
- 
+
+<dialog id="dlg" aria-labelledby="dlg-t">
+  <button class="dlg-close" type="button" id="dlg-x">Close</button>
+  <div class="dlg">
+    <div class="ph" id="dlg-ph"></div>
+    <div class="dlg-body">
+      <p class="cap" id="dlg-c"></p>
+      <h2 id="dlg-t"></h2>
+      <p id="dlg-d"></p>
+      <dl id="dlg-l"></dl>
+      <a class="dlg-cta" id="dlg-a" href="#enquire">Enquire about a similar residence</a>
+    </div>
+  </div>
+</dialog>
+
 <script>
+var P={
+  meadow:{c:'Gloucestershire, England · 340 m² · 2026',t:'The Meadow House',
+    d:'A single-storey house laid out along an east–west spine, so every principal room looks south over the valley. Deep oak-framed eaves shade the glass in summer and let the low winter sun reach the stone floor.',
+    l:[['Structure','Air-dried oak frame on a limestone plinth'],['Walls','Locally quarried Cotswold limestone, lime-rendered inside'],['Floors','Honed limestone over underfloor heating'],['Energy','Passive solar gain, mechanical heat recovery, ground-source heat pump'],['Water','Rainwater harvesting for garden and WCs']]},
+  highland:{c:'Perthshire, Scotland · 210 m² · 2025',t:'Highland Timber Pavilion',
+    d:'A pavilion that cantilevers over a sloping site to keep the footprint small and the heather undisturbed. Triple glazing, a very airtight envelope and a wood-fuelled stove carry it through long northern winters.',
+    l:[['Structure','Larch cross-laminated timber, cantilevered over a steel spine'],['Cladding','Untreated larch, left to weather silver'],['Energy','Off-grid: solar array, battery store, wood stove'],['Water','Private spring supply with rainwater backup'],['Insulation','Wood-fibre, vapour-open build-up']]},
+  kensington:{c:'London, England · 420 m² · 2024',t:'Kensington Townhouse',
+    d:'A careful restoration of a Victorian townhouse. We removed later partitions, repaired the original plasterwork and re-opened the tall ground-floor rooms, adding only what the house needed to work as a modern home.',
+    l:[['Approach','Restoration first, new work kept discreet'],['Plaster','Repaired and re-skimmed in breathable lime'],['Joinery','Bespoke oak and painted timber, made to match originals'],['Floors','Reclaimed boards, re-laid and oiled'],['Services','Concealed in the existing structure to protect the rooms']]}
+};
+var dlg=document.getElementById('dlg'),opener=null;
+function fill(k,card){
+  var d=P[k];
+  document.getElementById('dlg-c').textContent=d.c;
+  document.getElementById('dlg-t').textContent=d.t;
+  document.getElementById('dlg-d').textContent=d.d;
+  var dl=document.getElementById('dlg-l');dl.textContent='';
+  d.l.forEach(function(r){var w=document.createElement('div'),a=document.createElement('dt'),b=document.createElement('dd');a.textContent=r[0];b.textContent=r[1];w.appendChild(a);w.appendChild(b);dl.appendChild(w)});
+  var ph=document.getElementById('dlg-ph');ph.textContent='';
+  var src=card.querySelector('img');
+  ph.className='ph'+(card.querySelector('.ph.dark')?' dark':card.querySelector('.ph.light')?' light':'');
+  if(src){var im=document.createElement('img');im.src=src.currentSrc||src.src;im.alt=src.alt;ph.appendChild(im)}
+}
+if(dlg&&typeof dlg.showModal==='function'){
+  document.querySelectorAll('.card[data-p]').forEach(function(c){
+    c.addEventListener('click',function(e){
+      e.preventDefault();opener=c;fill(c.dataset.p,c);dlg.showModal();dlg.scrollTop=0;
+    });
+  });
+  function close(){dlg.close()}
+  document.getElementById('dlg-x').addEventListener('click',close);
+  dlg.addEventListener('click',function(e){if(e.target===dlg)close()});
+  document.getElementById('dlg-a').addEventListener('click',close);
+  dlg.addEventListener('close',function(){if(opener)opener.focus()});
+}
 document.getElementById('f').addEventListener('submit',function(e){
   e.preventDefault();
   document.getElementById('s').textContent='This is a concept site, so the form does not send anything.';
@@ -266,4 +337,3 @@ document.getElementById('f').addEventListener('submit',function(e){
 </script>
 </body>
 </html>
- 
